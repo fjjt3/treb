@@ -1,0 +1,11 @@
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+.bret3-env
+bret3-env/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
