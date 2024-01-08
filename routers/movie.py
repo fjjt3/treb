@@ -30,17 +30,9 @@ def create_movie(movie: schemas.MovieCreate, db: Session = Depends(get_db)):
     db.refresh(db_movie)
     return db_movie
 
-""" @router.delete('/{imdbID}')
-def delete_movie(imdbID: str, db: Session = Depends(get_db)):
-    movie = db.query(models.Movie).filter(models.Movie.imdbID == imdbID).first()
-    if movie:
-        db.delete(movie)
-        db.commit()
-        return {"message": "Movie deleted successfully"}
-    else:
-        raise HTTPException(status_code=404, detail="Movie not found") """
 
-@router.delete('/{imdbID}')
+
+"""@router.delete('/{imdbID}')
 def delete_movie(imdbID: str, authorization: str = Header(None), db: Session = Depends(get_db)):
     if authorization != "12345":
         raise HTTPException(status_code=403, detail="Unauthorized")
@@ -51,4 +43,19 @@ def delete_movie(imdbID: str, authorization: str = Header(None), db: Session = D
         db.commit()
         return {"message": "Movie deleted successfully"}
     else:
-        raise HTTPException(status_code=404, detail="Movie not found")
+        raise HTTPException(status_code=404, detail="Movie not found") """
+
+@router.delete('/{imdbID}')
+def delete_movie(imdbID: str, authorization: str = Header(None), db: Session = Depends(get_db)):
+    expected_authorization = "12345"  # Valor esperado del encabezado de autorización
+
+    if authorization != expected_authorization:
+        raise HTTPException(status_code=403, detail="La autorización es inválida o faltante")
+
+    movie = db.query(models.Movie).filter(models.Movie.imdbID == imdbID).first()
+    if movie:
+        db.delete(movie)
+        db.commit()
+        return {"message": "Película eliminada exitosamente"}
+    else:
+        raise HTTPException(status_code=404, detail="Película no encontrada")
